@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @since 3/6/2020
  */
 @Tag("qr-scanner")
-//@NpmPackage(value = "@granite-elements/granite-qrcode-scanner", version = "3.0.3")
+@NpmPackage(value = "@granite-elements/granite-qrcode-scanner", version = "3.0.3")
 @JsModule("./src/qr-scanner.js")
 public class QrScanner extends PolymerTemplate<QrScannerModel>{
 
