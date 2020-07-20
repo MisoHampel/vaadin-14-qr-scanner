@@ -10,13 +10,19 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
         this.shadowRoot.getElementById('mediaDevices').selectNextDevice()
     }
 
-    initSwitchButton(changedProperties) {
-        this.addEventListener('click', this.switchCamera);
-    }
-
     firstUpdated(changedProps) {
-        if (this.switchcameraafterstart) {
-            this.switchCamera()
+        this.canchange=true;
+    }
+    updated(changedProperties) {
+        if(this.canchange){
+            changedProperties.forEach((oldValue, propName) => {
+                if(propName == 'device'){
+                    if (this.switchcameraafterstart) {
+                        this.switchCamera()
+                    }
+                    this.canchange = false;
+                }
+            });
         }
     }
 
@@ -27,6 +33,9 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
                 type: Boolean,
             },
             switchcameraafterstart: {
+                type: Boolean,
+            },
+            canchange: {
                 type: Boolean,
             },
         }
@@ -105,30 +114,38 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
             </mwc-ripple>            
 
             ${
-            !this.active ?
+            !this.active && this.showchangecamera ?
                 html`
               <div id="buttonRow">
-                  <mwc-fab style="padding-right: 5em"
+                  <mwc-fab
                       icon="photo_camera" 
                       @click="${this._takePhoto}"></mwc-fab>
                       
-          </div>
+                  <mwc-fab style="margin-left: 1em"
+                      icon="switch_camera" 
+                      @click="${this.switchCamera}"></mwc-fab>
+               </div>
               ` :
-                ``
+                !this.active ?
+                    html`
+              <div id="buttonRow">
+                  <mwc-fab 
+                      icon="photo_camera" 
+                      @click="${this._takePhoto}"></mwc-fab>
+                      
+                </div>
+              ` :
+                    this.showchangecamera ?
+                        html`
+              <div id="buttonRow">
+                  <mwc-fab style="margin-left: 1em"
+                      icon="switch_camera" 
+                      @click="${this.switchCamera}"></mwc-fab>
+                      
+                </div>
+              ` : ``
         }
 
-            ${
-            this.showchangecamera ?
-                html`
-              <div id="buttonRow">
-                  <mwc-fab style="padding-left: 5em"
-                      icon="switch_camera" 
-                      @click="${this.initSwitchButton()}"></mwc-fab>
-                      
-          </div>
-              ` :
-                ``
-        }
           </div>
 
 
