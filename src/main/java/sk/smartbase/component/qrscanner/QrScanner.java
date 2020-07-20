@@ -26,14 +26,19 @@ public class QrScanner extends PolymerTemplate<QrScannerModel>{
     private Consumer<String> consumer;
 
     public QrScanner() {
+        this(false);
+    }
+
+    public QrScanner(boolean switchCameraAfterStart) {
         setId("qr-scanner");
         setActive(false);
         setDebug(false);
-        setFrequency(1000);
+        setFrequency(1);
+        setSwitchCameraAfterStart(switchCameraAfterStart);
     }
 
-    public QrScanner(Consumer<String> consumer) {
-        this();
+    public QrScanner(boolean switchCameraAfterStart,Consumer<String> consumer) {
+        this(switchCameraAfterStart);
         this.consumer = consumer;
     }
 
@@ -42,7 +47,7 @@ public class QrScanner extends PolymerTemplate<QrScannerModel>{
     }
 
     @EventHandler
-    private void setDetail(@EventData("event.detail") String detail){
+    private void onQrCodeDecoded(@EventData("event.detail") String detail){
         getElement().setAttribute("value", detail);
         this.lastValue =detail;
         if(consumer!=null)
@@ -76,6 +81,22 @@ public class QrScanner extends PolymerTemplate<QrScannerModel>{
      */
     public void setDebug(boolean debug){
         getModel().setDebug(debug);
+    }
+
+    /**
+     * If true, in preview view is change camera button shown
+     * @param showChangeCamera
+     */
+    public void setShowChangeCamera(boolean showChangeCamera){
+        getModel().setShowChangeCamera(showChangeCamera);
+    }
+
+    /**
+     * If true, after first update camera device is switched
+     * @param switchCameraAfterStart
+     */
+    public void setSwitchCameraAfterStart(Boolean switchCameraAfterStart){
+        getModel().setSwitchCameraAfterStart(switchCameraAfterStart);
     }
 
 }

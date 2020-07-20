@@ -25,4 +25,17 @@ public interface QrScannerModel extends TemplateModel {
      * If true, send logs to the console
      */
     void setDebug(boolean debug);
+
+    /**
+     * If true, in preview view is change camera button shown
+     * @param showchangecamera
+     */
+    void setShowChangeCamera(boolean showchangecamera);
+
+    /**
+     * If true, after first update camera device is switched
+     * @param switchcameraafterstart
+     */
+    void setSwitchCameraAfterStart(boolean switchcameraafterstart);
+
 }
