@@ -3,7 +3,7 @@
 
     <groupId>sk.smartbase.component</groupId>
     <artifactId>qr-scanner</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>QR Scanner</name>
     <description>Integration of @granite-elements/granite-qrcode-scanner for Vaadin platform</description>
 

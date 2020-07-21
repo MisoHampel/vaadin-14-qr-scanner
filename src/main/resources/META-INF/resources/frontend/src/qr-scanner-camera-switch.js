@@ -10,7 +10,14 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
         this.shadowRoot.getElementById('mediaDevices').selectNextDevice()
     }
 
-    firstUpdated(changedProps) {
+    chooseCameraByIndex(index){
+        if(index < this.shadowRoot.getElementById('mediaDevices').devices.length && index >=0){
+            this.shadowRoot.getElementById('mediaDevices').selectDevice(this.shadowRoot.getElementById('mediaDevices').devices[index])
+        }
+    }
+
+    constructor() {
+        super();
         this.canchange=true;
     }
     updated(changedProperties) {
@@ -18,7 +25,7 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
             changedProperties.forEach((oldValue, propName) => {
                 if(propName == 'device'){
                     if (this.switchcameraafterstart) {
-                        this.switchCamera()
+                        this.chooseCameraByIndex(1);
                     }
                     this.canchange = false;
                 }
@@ -88,14 +95,19 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
               @selected-device-changed="${this._onSelectedDeviceChanged}"
               kind="videoinput"></app-media-devices>
 
-          <app-media-stream
-              .video-device="${this.device}"
-              .videoDevice="${this.device}"
-              video-constraints=
-                '{"width": {"ideal": 480}, "height": {"ideal": 480},}'
-              @active-changed="${this._onActiveChanged}"
-              @stream-changed="${this._onStreamChanged}"
-              active></app-media-stream>
+            ${!this.canchange ?
+                html`
+                  <app-media-stream
+                  .video-device="${this.device}"
+                  .videoDevice="${this.device}"
+                  video-constraints=
+                    '{"width": {"ideal": 480}, "height": {"ideal": 480},}'
+                  @active-changed="${this._onActiveChanged}"
+                  @stream-changed="${this._onStreamChanged}"
+                  active></app-media-stream>
+                  ` : ``
+            }
+          
 
           <div id="videoWindow">
 
@@ -106,7 +118,7 @@ class MyGraniteQrcodeScanner extends GraniteQrcodeScanner {
                 autoplay
                 muted></app-media-video>
 
-            <div id="targetSquare"></div>
+<!--            <div id="targetSquare"></div>-->
 
             <mwc-ripple 
                 id="ripple" 
